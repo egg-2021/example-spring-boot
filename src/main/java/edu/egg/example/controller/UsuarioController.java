@@ -2,7 +2,9 @@ package edu.egg.example.controller;
 
 import edu.egg.example.entity.Usuario;
 import edu.egg.example.service.UsuarioService;
+
 import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -55,6 +57,12 @@ public class UsuarioController {
     @PostMapping("/modificar")
     public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento) {
         usuarioService.modificar(dni, nombre, apellido, fechaNacimiento);
+        return new RedirectView("/usuarios");
+    }
+
+    @PostMapping("/habilitar/{dni}")
+    public RedirectView habilitar(@PathVariable Long dni) {
+        usuarioService.habilitar(dni);
         return new RedirectView("/usuarios");
     }
 

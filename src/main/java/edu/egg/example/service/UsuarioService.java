@@ -2,9 +2,11 @@ package edu.egg.example.service;
 
 import edu.egg.example.entity.Usuario;
 import edu.egg.example.repository.UsuarioRepository;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class UsuarioService {
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
         usuario.setFechaNacimiento(fechaNacimiento);
+        usuario.setAlta(true);
 
         usuarioRepository.save(usuario);
     }
@@ -41,6 +44,11 @@ public class UsuarioService {
     public Usuario buscarPorDni(Long dni) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(dni);
         return usuarioOptional.orElse(null);
+    }
+
+    @Transactional
+    public void habilitar(Long dni) {
+        usuarioRepository.habilitar(dni);
     }
 
     @Transactional
