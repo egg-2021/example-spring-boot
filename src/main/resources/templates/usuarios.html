@@ -41,12 +41,10 @@
                 <td class="col-md-3 px-md-2" th:text="${#dates.format(usuario.fechaNacimiento, 'dd/MM/yyyy')}"></td>
                 <td class="col-md-3 px-md-2 d-flex justify-content-around w-100">
                     <a class="btn btn-secondary btn-sm" th:href="@{/usuarios/editar/__${usuario.dni}__}">Editar</a>
-                    <form th:if="${usuario.alta}" method="post" th:action="@{/usuarios/eliminar/__${usuario.dni}__}">
-                        <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
-                    </form>
-                    <form th:unless="${usuario.alta}" method="post"
-                          th:action="@{/usuarios/habilitar/__${usuario.dni}__}">
-                        <button class="btn btn-danger btn-sm" type="submit">Habilitar</button>
+                    <form method="post"
+                          th:action="${usuario.alta} ? @{/usuarios/eliminar/__${usuario.dni}__} : @{/usuarios/habilitar/__${usuario.dni}__}">
+                        <button th:class="${usuario.alta} ? 'btn btn-danger btn-sm' : 'btn btn-primary btn-sm'"
+                                type="submit" th:text="${usuario.alta} ? 'Eliminar' : 'Habilitar'"></button>
                     </form>
                 </td>
             </tr>
