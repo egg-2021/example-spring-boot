@@ -5,7 +5,6 @@ import edu.egg.example.repository.UsuarioRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,11 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Transactional
-    public void crear(Long dni, String nombre, String apellido, Date fechaNacimiento) {
+    public void crear(Long dni, String nombre, String apellido, Date fechaNacimiento) throws Exception {
+        if (usuarioRepository.existsById(dni)) {
+            throw new Exception("Ya existe un usuario con el DNI indicado");
+        }
+
         Usuario usuario = new Usuario();
 
         usuario.setDni(dni);
@@ -42,8 +45,7 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public Usuario buscarPorDni(Long dni) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(dni);
-        return usuarioOptional.orElse(null);
+        return usuarioRepository.findById(dni).orElse(null);
     }
 
     @Transactional

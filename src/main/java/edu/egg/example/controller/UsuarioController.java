@@ -4,6 +4,7 @@ import edu.egg.example.entity.Usuario;
 import edu.egg.example.service.UsuarioService;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -24,8 +29,15 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public ModelAndView mostrarTodos() {
+    public ModelAndView mostrarTodos(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("usuarios");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+
+        if (flashMap != null) {
+            mav.addObject("exito", flashMap.get("exito-name"));
+            mav.addObject("error", flashMap.get("error-name"));
+        }
+
         mav.addObject("usuarios", usuarioService.buscarTodos());
         return mav;
     }
@@ -49,13 +61,18 @@ public class UsuarioController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento) {
-        usuarioService.crear(dni, nombre, apellido, fechaNacimiento);
+    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento, RedirectAttributes attributes) {
+        try {
+            usuarioService.crear(dni, nombre, apellido, fechaNacimiento);
+            attributes.addFlashAttribute("exito-name", "El usuario ha sido creado exitosamente");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error-name", e.getMessage());
+        }
         return new RedirectView("/usuarios");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento) {
+    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento, RedirectAttributes attributes) {
         usuarioService.modificar(dni, nombre, apellido, fechaNacimiento);
         return new RedirectView("/usuarios");
     }
