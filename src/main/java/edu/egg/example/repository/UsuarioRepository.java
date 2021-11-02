@@ -2,6 +2,7 @@ package edu.egg.example.repository;
 
 import edu.egg.example.entity.Usuario;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Modifying
     @Query("UPDATE Usuario u SET u.nombre = :nombre, u.apellido = :apellido, u.fechaNacimiento = :fechaNacimiento WHERE u.dni = :dni")
-    void modificar(@Param("dni") Long dni, @Param("nombre") String nombre, @Param("apellido") String apellido, @Param("fechaNacimiento") Date fechaNacimiento);
+    void modificar(@Param("dni") Long dni, @Param("nombre") String nombre, @Param("apellido") String apellido, @Param("fechaNacimiento") LocalDate fechaNacimiento);
 
     @Modifying
     @Query("UPDATE Usuario u SET u.alta = true WHERE u.dni = :dni")

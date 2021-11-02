@@ -3,11 +3,10 @@ package edu.egg.example.controller;
 import edu.egg.example.entity.Usuario;
 import edu.egg.example.service.UsuarioService;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,7 +60,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento, RedirectAttributes attributes) {
+    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, RedirectAttributes attributes) {
         try {
             usuarioService.crear(dni, nombre, apellido, fechaNacimiento);
             attributes.addFlashAttribute("exito-name", "El usuario ha sido creado exitosamente");
@@ -72,7 +71,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaNacimiento, RedirectAttributes attributes) {
+    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, RedirectAttributes attributes) {
         usuarioService.modificar(dni, nombre, apellido, fechaNacimiento);
         return new RedirectView("/usuarios");
     }

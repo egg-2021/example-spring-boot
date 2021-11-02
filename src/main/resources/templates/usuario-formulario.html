@@ -33,7 +33,7 @@
         </div>
         <div class="form-floating mb-3 col-xl-6">
             <input class="form-control" id="documento" placeholder="Documento" required th:field="*{dni}"
-                   th:readonly="${usuario.dni != null}"
+                   th:readonly="${usuario.dni}"
                    type="text"/>
             <label for="documento">Documento</label>
             <div class="invalid-feedback">El documento es obligatorio</div>
@@ -57,22 +57,19 @@
 <!-- JS -->
 <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
 <script>
-            (() => {
-            "use strict";
+    (() => {
+        "use strict";
 
-            const form = document.getElementById("formulario");
-            form.addEventListener("submit", (event) => {
+        const form = document.getElementById("formulario");
+        form.addEventListener("submit", (event) => {
             if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
+                event.preventDefault();
+                event.stopPropagation();
             }
 
             form.classList.add("was-validated");
-            }, false);
-            })()
-
-
-
+        }, false);
+    })()
 </script>
 </body>
 </html>

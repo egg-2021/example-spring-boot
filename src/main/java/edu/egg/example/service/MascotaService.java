@@ -1,10 +1,13 @@
 package edu.egg.example.service;
 
 import edu.egg.example.entity.Mascota;
+import edu.egg.example.entity.Usuario;
 import edu.egg.example.repository.MascotaRepository;
 import edu.egg.example.repository.UsuarioRepository;
+
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +22,11 @@ public class MascotaService {
     private UsuarioRepository usuarioRepository;
 
     @Transactional
-    public void crear(String nombre, Long dniDuenio) {
+    public void crear(String nombre, Usuario duenio) {
         Mascota mascota = new Mascota();
 
         mascota.setNombre(nombre);
-        mascota.setDuenio(usuarioRepository.findById(dniDuenio).orElse(null));
+        mascota.setDuenio(duenio);
 
         mascotaRepository.save(mascota);
     }

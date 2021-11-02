@@ -3,7 +3,7 @@ package edu.egg.example.service;
 import edu.egg.example.entity.Usuario;
 import edu.egg.example.repository.UsuarioRepository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Transactional
-    public void crear(Long dni, String nombre, String apellido, Date fechaNacimiento) throws Exception {
+    public void crear(Long dni, String nombre, String apellido, LocalDate fechaNacimiento) throws Exception {
         if (usuarioRepository.existsById(dni)) {
             throw new Exception("Ya existe un usuario con el DNI indicado");
         }
@@ -34,7 +34,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void modificar(Long dni, String nombre, String apellido, Date fechaNacimiento) {
+    public void modificar(Long dni, String nombre, String apellido, LocalDate fechaNacimiento) {
         usuarioRepository.modificar(dni, nombre, apellido, fechaNacimiento);
     }
 

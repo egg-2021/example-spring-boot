@@ -27,12 +27,13 @@
             <div class="invalid-feedback">El nombre es obligatorio</div>
         </div>
         <div class="form-floating mb-3 col-xl-6">
-            <select aria-label="Elegir dueño" class="form-select" id="duenio" th:field="*{duenio}">
+            <select aria-label="Elegir dueño" class="form-select" id="duenio" th:field="*{duenio}" required>
                 <option selected value="">Elegir dueño</option>
                 <option th:each="usuario : ${usuarios}" th:text="|${usuario.nombre} ${usuario.apellido}|"
                         th:value="${usuario.dni}"></option>
             </select>
             <label for="duenio">Dueño</label>
+            <div class="invalid-feedback">El dueño es obligatorio</div>
         </div>
         <div class="row">
             <div class="col-xl-3">
@@ -48,19 +49,19 @@
 <!-- JS -->
 <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
 <script>
-            (() => {
-            "use strict";
+    (() => {
+        "use strict";
 
-            const form = document.getElementById("formulario");
-            form.addEventListener("submit", (event) => {
+        const form = document.getElementById("formulario");
+        form.addEventListener("submit", (event) => {
             if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
+                event.preventDefault();
+                event.stopPropagation();
             }
 
             form.classList.add("was-validated");
-            }, false)
-            })();
+        }, false)
+    })();
 </script>
 </body>
 </html>

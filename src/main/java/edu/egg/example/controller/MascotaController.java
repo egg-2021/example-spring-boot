@@ -1,6 +1,7 @@
 package edu.egg.example.controller;
 
 import edu.egg.example.entity.Mascota;
+import edu.egg.example.entity.Usuario;
 import edu.egg.example.service.MascotaService;
 import edu.egg.example.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,8 @@ public class MascotaController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam String nombre, @RequestParam("duenio") Long dniDuenio) {
-        mascotaService.crear(nombre, dniDuenio);
+    public RedirectView guardar(@RequestParam String nombre, @RequestParam Usuario duenio) {
+        mascotaService.crear(nombre, duenio);
         return new RedirectView("/mascotas");
     }
 
