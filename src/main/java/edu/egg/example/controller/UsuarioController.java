@@ -60,9 +60,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, RedirectAttributes attributes) {
+    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String username, @RequestParam String clave, RedirectAttributes attributes) {
         try {
-            usuarioService.crear(dni, nombre, apellido, fechaNacimiento);
+            usuarioService.crear(dni, nombre, apellido, fechaNacimiento, username, clave);
             attributes.addFlashAttribute("exito-name", "El usuario ha sido creado exitosamente");
         } catch (Exception e) {
             attributes.addFlashAttribute("error-name", e.getMessage());

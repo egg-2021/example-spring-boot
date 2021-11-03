@@ -20,17 +20,20 @@
     <hr class="mb-5 col-xl-12"/>
     <form autocomplete="off" class="needs-validation" id="formulario" method="POST"
           novalidate th:action="@{/usuarios/__${action}__}" th:object="${usuario}">
+
         <div class="form-floating mb-3 col-xl-6">
             <input class="form-control" id="nombre" placeholder="Nombre" required th:field="*{nombre}" type="text"/>
             <label for="nombre">Nombre</label>
             <div class="invalid-feedback">El nombre es obligatorio</div>
         </div>
+
         <div class="form-floating mb-3 col-xl-6">
             <input class="form-control" id="apellido" placeholder="Apellido" required th:field="*{apellido}"
                    type="text"/>
             <label for="apellido">Apellido</label>
             <div class="invalid-feedback">El apellido es obligatorio</div>
         </div>
+
         <div class="form-floating mb-3 col-xl-6">
             <input class="form-control" id="documento" placeholder="Documento" required th:field="*{dni}"
                    th:readonly="${usuario.dni}"
@@ -38,11 +41,26 @@
             <label for="documento">Documento</label>
             <div class="invalid-feedback">El documento es obligatorio</div>
         </div>
+
         <div class="form-floating mb-3 col-xl-6">
             <input class="form-control" id="fecha-nacimiento" required th:field="*{fechaNacimiento}" type="date"/>
             <label for="fecha-nacimiento">Fecha de nacimiento</label>
             <div class="invalid-feedback">La fecha de nacimiento es obligatoria</div>
         </div>
+
+        <div class="form-floating mb-3 col-xl-6">
+            <input class="form-control" id="username" placeholder="Username" required th:field="*{username}"
+                   type="text"/>
+            <label for="username">Username</label>
+            <div class="invalid-feedback">El username es obligatorio</div>
+        </div>
+
+        <div class="form-floating mb-3 col-xl-6">
+            <input class="form-control" id="clave" placeholder="Clave" required th:field="*{clave}" type="password"/>
+            <label for="clave">Clave</label>
+            <div class="invalid-feedback">La clave es obligatoria</div>
+        </div>
+
         <div class="row">
             <div class="col-xl-3">
                 <button class="btn btn-success" th:text="${action == 'guardar'} ? 'Crear usuario' : 'Guardar cambios'"

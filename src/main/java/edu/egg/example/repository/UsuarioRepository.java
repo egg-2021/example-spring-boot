@@ -4,6 +4,7 @@ import edu.egg.example.entity.Usuario;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,4 +22,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Modifying
     @Query("UPDATE Usuario u SET u.alta = true WHERE u.dni = :dni")
     void habilitar(@Param("dni") Long dni);
+
+    @Query("SELECT u FROM Usuario u WHERE u.username = :username")
+    Usuario buscarUsuarioPorUsername(@Param("username") String username);
+
+    Optional<Usuario> findByUsername(String username);
 }

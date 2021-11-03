@@ -28,6 +28,12 @@ public class Usuario {
     @Column(nullable = false)
     private String apellido;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String clave;
+
     @Column(nullable = false)
     private LocalDate fechaNacimiento;
 
