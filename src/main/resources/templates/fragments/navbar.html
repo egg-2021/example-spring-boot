@@ -18,7 +18,7 @@
                         <li>
                             <a class="dropdown-item" th:href="@{/usuarios}">Mostrar todos</a>
                         </li>
-                        <li>
+                        <li sec:authorize="hasRole('ADMIN')">
                             <a class="dropdown-item" th:href="@{/usuarios/crear}">Crear usuario</a>
                         </li>
                     </ul>
@@ -31,7 +31,7 @@
                     </a>
                     <ul aria-labelledby="dropdown-mascotas" class="dropdown-menu dropdown-menu-dark">
                         <li><a class="dropdown-item" th:href="@{/mascotas}">Mostrar todas</a></li>
-                        <li>
+                        <li sec:authorize="hasRole('ADMIN')">
                             <a class="dropdown-item" th:href="@{/mascotas/crear}">Crear mascota</a>
                         </li>
                     </ul>

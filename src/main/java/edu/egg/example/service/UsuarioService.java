@@ -1,5 +1,6 @@
 package edu.egg.example.service;
 
+import edu.egg.example.entity.Rol;
 import edu.egg.example.entity.Usuario;
 import edu.egg.example.repository.UsuarioRepository;
 
@@ -8,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +31,7 @@ public class UsuarioService implements UserDetailsService {
     private final String MENSAJE_USERNAME = "No existe un usuario registrado con el correo %s";
 
     @Transactional
-    public void crear(Long dni, String nombre, String apellido, LocalDate fechaNacimiento, String correo, String clave) throws Exception {
+    public void crear(Long dni, String nombre, String apellido, LocalDate fechaNacimiento, String correo, String clave, Rol rol) throws Exception {
         if (usuarioRepository.existsById(dni)) {
             throw new Exception("Ya existe un usuario asociado con el DNI ingresado");
         }
@@ -45,6 +48,7 @@ public class UsuarioService implements UserDetailsService {
         usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setCorreo(correo);
         usuario.setClave(encoder.encode(clave));
+        usuario.setRol(rol);
         usuario.setAlta(true);
 
         usuarioRepository.save(usuario);
@@ -79,6 +83,9 @@ public class UsuarioService implements UserDetailsService {
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByCorreo(correo)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE_USERNAME, correo)));
-        return new User(usuario.getCorreo(), usuario.getClave(), Collections.emptyList());
+
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
+
+        return new User(usuario.getCorreo(), usuario.getClave(), Collections.singletonList(authority));
     }
 }

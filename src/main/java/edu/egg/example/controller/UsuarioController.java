@@ -1,12 +1,15 @@
 package edu.egg.example.controller;
 
+import edu.egg.example.entity.Rol;
 import edu.egg.example.entity.Usuario;
+import edu.egg.example.service.RolService;
 import edu.egg.example.service.UsuarioService;
 
 import java.time.LocalDate;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +30,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private RolService rolService;
+
     @GetMapping
     public ModelAndView mostrarTodos(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("usuarios");
@@ -42,27 +48,32 @@ public class UsuarioController {
     }
 
     @GetMapping("/crear")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView crearUsuario() {
         ModelAndView mav = new ModelAndView("usuario-formulario");
         mav.addObject("usuario", new Usuario());
         mav.addObject("title", "Crear Usuario");
         mav.addObject("action", "guardar");
+        mav.addObject("roles", rolService.buscarTodos());
         return mav;
     }
 
     @GetMapping("/editar/{dni}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editarUsuario(@PathVariable Long dni) {
         ModelAndView mav = new ModelAndView("usuario-formulario");
         mav.addObject("usuario", usuarioService.buscarPorDni(dni));
         mav.addObject("title", "Editar Usuario");
         mav.addObject("action", "modificar");
+        mav.addObject("roles", rolService.buscarTodos());
         return mav;
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String correo, @RequestParam String clave, RedirectAttributes attributes) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes) {
         try {
-            usuarioService.crear(dni, nombre, apellido, fechaNacimiento, correo, clave);
+            usuarioService.crear(dni, nombre, apellido, fechaNacimiento, correo, clave, rol);
             attributes.addFlashAttribute("exito", "El usuario ha sido creado exitosamente");
         } catch (Exception e) {
             attributes.addFlashAttribute("error", e.getMessage());
@@ -71,7 +82,8 @@ public class UsuarioController {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String correo, @RequestParam String clave, RedirectAttributes attributes) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes) {
         usuarioService.modificar(dni, nombre, apellido, fechaNacimiento, correo, clave);
         return new RedirectView("/usuarios");
     }

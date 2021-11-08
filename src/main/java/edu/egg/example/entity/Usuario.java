@@ -47,5 +47,9 @@ public class Usuario {
     @OneToMany(mappedBy = "duenio")
     private List<Mascota> mascotas;
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Rol rol;
+
     private Boolean alta;
 }

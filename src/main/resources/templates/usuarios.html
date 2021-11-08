@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -31,7 +31,7 @@
                 <th class="col-md-3 px-md-2" scope="col">Apellido</th>
                 <th class="col-md-3 px-md-2" scope="col">Nombre</th>
                 <th class="col-md-2 px-md-2" scope="col">Fecha de nacimiento</th>
-                <th class="col-md-3 px-md-2" scope="col">Acciones</th>
+                <th sec:authorize="hasRole('ADMIN')" class="col-md-3 px-md-2" scope="col">Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
                 <td class="col-md-3 px-md-2" th:text="${usuario.apellido}"></td>
                 <td class="col-md-3 px-md-2" th:text="${usuario.nombre}"></td>
                 <td class="col-md-3 px-md-2" th:text="${#temporals.format(usuario.fechaNacimiento, 'dd/MM/yyyy')}"></td>
-                <td class="col-md-3 px-md-2 d-flex justify-content-around w-100">
+                <td sec:authorize="hasRole('ADMIN')" class="col-md-3 px-md-2 d-flex justify-content-around w-100">
                     <a class="btn btn-secondary btn-sm" th:href="@{/usuarios/editar/__${usuario.dni}__}">Editar</a>
                     <form method="post"
                           th:action="${usuario.alta} ? @{/usuarios/eliminar/__${usuario.dni}__} : @{/usuarios/habilitar/__${usuario.dni}__}">

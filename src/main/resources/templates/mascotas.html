@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -27,14 +27,14 @@
             <tr>
                 <th class="col-md-4 px-md-2" scope="col">Nombre</th>
                 <th class="col-md-4 px-md-2" scope="col">Dueño</th>
-                <th class="col-md-4 px-md-2" scope="col">Acciones</th>
+                <th sec:authorize="hasRole('ADMIN')" class="col-md-4 px-md-2" scope="col">Acciones</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="mascota : ${mascotas}">
                 <td class="col-md-4 px-md-2" th:text="${mascota.nombre}"></td>
                 <td class="col-md-4 px-md-2" th:text="|${mascota.duenio.nombre} ${mascota.duenio.apellido}|"></td>
-                <td class="col-md-4 px-md-2 d-flex justify-content-around w-100">
+                <td sec:authorize="hasRole('ADMIN')" class="col-md-4 px-md-2 d-flex justify-content-around w-100">
                     <a class="btn btn-secondary btn-sm" th:href="@{/mascotas/editar/__${mascota.id}__}">Editar</a>
                     <form method="post" th:action="@{/mascotas/eliminar/__${mascota.id}__}">
                         <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
