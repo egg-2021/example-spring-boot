@@ -2,6 +2,7 @@ package edu.egg.example.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE mascota SET alta = false WHERE id = ?")
 public class Mascota {
 
     @Id

@@ -24,10 +24,8 @@ public class MascotaService {
     @Transactional
     public void crear(String nombre, Usuario duenio) {
         Mascota mascota = new Mascota();
-
         mascota.setNombre(nombre);
         mascota.setDuenio(duenio);
-
         mascotaRepository.save(mascota);
     }
 

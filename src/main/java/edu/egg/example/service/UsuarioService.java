@@ -25,12 +25,16 @@ public class UsuarioService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    private final String MENSAJE = "El username ingresado no existe %s";
+    private final String MENSAJE_USERNAME = "No existe un usuario registrado con el correo %s";
 
     @Transactional
-    public void crear(Long dni, String nombre, String apellido, LocalDate fechaNacimiento, String username, String clave) throws Exception {
+    public void crear(Long dni, String nombre, String apellido, LocalDate fechaNacimiento, String correo, String clave) throws Exception {
         if (usuarioRepository.existsById(dni)) {
-            throw new Exception("Ya existe un usuario con el DNI indicado");
+            throw new Exception("Ya existe un usuario asociado con el DNI ingresado");
+        }
+
+        if (usuarioRepository.existsByCorreo(correo)) {
+            throw new Exception("Ya existe un usuario asociado con el correo ingresado");
         }
 
         Usuario usuario = new Usuario();
@@ -39,16 +43,16 @@ public class UsuarioService implements UserDetailsService {
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
         usuario.setFechaNacimiento(fechaNacimiento);
-        usuario.setUsername(username);
-        usuario.setClave(encoder.encode(clave)); // Encriptación de clave
+        usuario.setCorreo(correo);
+        usuario.setClave(encoder.encode(clave));
         usuario.setAlta(true);
 
         usuarioRepository.save(usuario);
     }
 
     @Transactional
-    public void modificar(Long dni, String nombre, String apellido, LocalDate fechaNacimiento) {
-        usuarioRepository.modificar(dni, nombre, apellido, fechaNacimiento);
+    public void modificar(Long dni, String nombre, String apellido, LocalDate fechaNacimiento, String correo, String clave) {
+        usuarioRepository.modificar(dni, nombre, apellido, fechaNacimiento, correo, clave);
     }
 
     @Transactional(readOnly = true)
@@ -72,10 +76,9 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE, username)));
-
-        return new User(usuario.getUsername(), usuario.getClave(), Collections.emptyList());
+    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByCorreo(correo)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(MENSAJE_USERNAME, correo)));
+        return new User(usuario.getCorreo(), usuario.getClave(), Collections.emptyList());
     }
 }

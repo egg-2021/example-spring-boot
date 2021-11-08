@@ -33,8 +33,8 @@ public class UsuarioController {
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 
         if (flashMap != null) {
-            mav.addObject("exito", flashMap.get("exito-name"));
-            mav.addObject("error", flashMap.get("error-name"));
+            mav.addObject("exito", flashMap.get("exito"));
+            mav.addObject("error", flashMap.get("error"));
         }
 
         mav.addObject("usuarios", usuarioService.buscarTodos());
@@ -60,19 +60,19 @@ public class UsuarioController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String username, @RequestParam String clave, RedirectAttributes attributes) {
+    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String correo, @RequestParam String clave, RedirectAttributes attributes) {
         try {
-            usuarioService.crear(dni, nombre, apellido, fechaNacimiento, username, clave);
-            attributes.addFlashAttribute("exito-name", "El usuario ha sido creado exitosamente");
+            usuarioService.crear(dni, nombre, apellido, fechaNacimiento, correo, clave);
+            attributes.addFlashAttribute("exito", "El usuario ha sido creado exitosamente");
         } catch (Exception e) {
-            attributes.addFlashAttribute("error-name", e.getMessage());
+            attributes.addFlashAttribute("error", e.getMessage());
         }
         return new RedirectView("/usuarios");
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, RedirectAttributes attributes) {
-        usuarioService.modificar(dni, nombre, apellido, fechaNacimiento);
+    public RedirectView modificar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String correo, @RequestParam String clave, RedirectAttributes attributes) {
+        usuarioService.modificar(dni, nombre, apellido, fechaNacimiento, correo, clave);
         return new RedirectView("/usuarios");
     }
 

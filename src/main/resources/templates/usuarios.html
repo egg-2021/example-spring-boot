@@ -13,13 +13,13 @@
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<nav th:replace="fragmentos :: navbar"></nav>
+<nav th:replace="fragments/navbar :: navbar"></nav>
 
 <div class="container mt-5 main">
     <h1>Listado de usuarios</h1>
     <hr class="mb-5"/>
-    <div class="alert alert-success" th:if="${exito != null}" th:text="${exito}"></div>
-    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+    <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
     <div th:if="${usuarios.isEmpty()}">
         <h5>Todavía no hay usuarios cargados. <a th:href="@{/usuarios/crear}">Cargar usuario.</a></h5>
     </div>
@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<footer th:replace="fragmentos :: footer"></footer>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 <!-- JS -->
 <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>

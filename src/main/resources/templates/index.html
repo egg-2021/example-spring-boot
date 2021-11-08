@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<nav th:replace="fragmentos :: navbar"></nav>
+<nav th:replace="fragments/navbar :: navbar"></nav>
 
 <div class="container mt-5 main">
     <div class="row my-auto g-4 justify-content-evenly">
@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<footer th:replace="fragmentos :: footer"></footer>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 <!-- JS -->
 <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>

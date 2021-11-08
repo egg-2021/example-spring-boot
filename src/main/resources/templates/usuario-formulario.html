@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<nav th:replace="fragmentos :: navbar"></nav>
+<nav th:replace="fragments/navbar :: navbar"></nav>
 
 <div class="container mt-5 main">
     <h1 th:text="${title}"></h1>
@@ -49,10 +49,10 @@
         </div>
 
         <div class="form-floating mb-3 col-xl-6">
-            <input class="form-control" id="username" placeholder="Username" required th:field="*{username}"
-                   type="text"/>
-            <label for="username">Username</label>
-            <div class="invalid-feedback">El username es obligatorio</div>
+            <input class="form-control" id="correo" placeholder="Correo" required th:field="*{correo}"
+                   type="email"/>
+            <label for="correo">Correo</label>
+            <div class="invalid-feedback">El correo es obligatorio</div>
         </div>
 
         <div class="form-floating mb-3 col-xl-6">
@@ -70,7 +70,7 @@
     </form>
 </div>
 
-<footer th:replace="fragmentos :: footer"></footer>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 <!-- JS -->
 <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>

@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<nav th:replace="fragmentos :: navbar"></nav>
+<nav th:replace="fragments/navbar :: navbar"></nav>
 
 <div class="container mt-5 main">
     <h1>Listado de mascotas</h1>
@@ -33,9 +33,7 @@
             <tbody>
             <tr th:each="mascota : ${mascotas}">
                 <td class="col-md-4 px-md-2" th:text="${mascota.nombre}"></td>
-                <td class="col-md-4 px-md-2">
-                    <span th:text="|${mascota.duenio.nombre} ${mascota.duenio.apellido}|"></span>
-                </td>
+                <td class="col-md-4 px-md-2" th:text="|${mascota.duenio.nombre} ${mascota.duenio.apellido}|"></td>
                 <td class="col-md-4 px-md-2 d-flex justify-content-around w-100">
                     <a class="btn btn-secondary btn-sm" th:href="@{/mascotas/editar/__${mascota.id}__}">Editar</a>
                     <form method="post" th:action="@{/mascotas/eliminar/__${mascota.id}__}">
@@ -48,7 +46,7 @@
     </div>
 </div>
 
-<footer th:replace="fragmentos :: footer"></footer>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 <!-- JS -->
 <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
