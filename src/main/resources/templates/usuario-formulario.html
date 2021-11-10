@@ -17,6 +17,7 @@
 
 <div class="container mt-5 main">
     <h1 th:text="${title}"></h1>
+    <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
     <hr class="mb-5 col-xl-12"/>
     <form autocomplete="off" class="needs-validation" id="formulario" method="POST"
           novalidate th:action="@{/usuarios/__${action}__}" th:object="${usuario}">

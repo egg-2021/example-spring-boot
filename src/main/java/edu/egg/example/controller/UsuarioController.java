@@ -11,11 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -49,9 +45,17 @@ public class UsuarioController {
 
     @GetMapping("/crear")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView crearUsuario() {
+    public ModelAndView crearUsuario(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("usuario-formulario");
-        mav.addObject("usuario", new Usuario());
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+
+        if (flashMap != null) {
+            mav.addObject("error", flashMap.get("error"));
+            mav.addObject("usuario", flashMap.get("usuario"));
+        } else {
+            mav.addObject("usuario", new Usuario());
+        }
+
         mav.addObject("title", "Crear Usuario");
         mav.addObject("action", "guardar");
         mav.addObject("roles", rolService.buscarTodos());
@@ -71,12 +75,14 @@ public class UsuarioController {
 
     @PostMapping("/guardar")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam LocalDate fechaNacimiento, @RequestParam String correo, @RequestParam String clave, @RequestParam Rol rol, RedirectAttributes attributes) {
+    public RedirectView guardar(@ModelAttribute Usuario usuario, RedirectAttributes attributes) {
         try {
-            usuarioService.crear(dni, nombre, apellido, fechaNacimiento, correo, clave, rol);
+            usuarioService.crear(usuario.getDni(), usuario.getNombre(), usuario.getApellido(), usuario.getFechaNacimiento(), usuario.getCorreo(), usuario.getClave(), usuario.getRol());
             attributes.addFlashAttribute("exito", "El usuario ha sido creado exitosamente");
         } catch (Exception e) {
+            attributes.addFlashAttribute("usuario", usuario);
             attributes.addFlashAttribute("error", e.getMessage());
+            return new RedirectView("/usuarios/crear");
         }
         return new RedirectView("/usuarios");
     }
